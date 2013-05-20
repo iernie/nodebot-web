@@ -1,0 +1,26 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+body a {
+  color: #00B7FF;
+}
+#content {
+  width: 960px;
+  margin: 0 auto;
+}
+#content ul {
+  list-style-type: none;
+  padding: 0;
+}
+#content ul li {
+  width: 100%;
+  padding: 15px 10px;
+  border: 1px solid #bbb;
+  border-bottom: 0;
+}
+#content ul li:nth-child(odd) {
+  background: #eee;
+}
+#content ul li:last-child {
+  border-bottom: 1px solid #bbb;
+}
