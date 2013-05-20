@@ -11,7 +11,7 @@
 	    <ul>
 			<% for(var i=0; i<logs.length; i++) { %>
 				<li>
-					<%= logs[i].log.date %> <<%= logs[i].log.nick %>>: <%= logs[i].log.message %>
+					<%= logs[i].log.date %> <%= logs[i].log.nick %>: <%= logs[i].log.message %>
 				</li>
 			<% } %>
 		</ul>
