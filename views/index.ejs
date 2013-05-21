@@ -12,7 +12,7 @@
 	    <ul id="logs">
 			<% for(var i=0; i<logs.length; i++) { %>
 				<li>
-					<span class="date"><%= logs[i].log.date %></span> <%= logs[i].log.nick %>: <%= logs[i].log.message %>
+					<span class="date"><%= logs[i].log.date %></span> <span style="color: <%= logs[i].log.color %>"><%= logs[i].log.nick %></span>: <%= logs[i].log.message %>
 				</li>
 			<% } %>
 		</ul>
