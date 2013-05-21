@@ -9,7 +9,7 @@
   	<div id="content">
 	    <h1><%= title %></h1>
 	    <p><%= title %> logs</p>
-	    <ul>
+	    <ul id="logs">
 			<% for(var i=0; i<logs.length; i++) { %>
 				<li>
 					<%= logs[i].log.date %> <%= logs[i].log.nick %>: <%= logs[i].log.message %>

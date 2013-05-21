@@ -2,6 +2,11 @@
 	#content {
 		width: 100%;
 		margin: 10px;
+
+		ul#logs {
+			overflow: auto;
+			height: 100%;
+		}
 	}
 }
 
@@ -17,10 +22,11 @@ body {
 	width: 960px;
 	margin: 0 auto;
 
-	ul {
+	ul#logs {
 		list-style-type: none;
 		padding: 0;
-
+		overflow: scroll;
+		height: 500px;
 
 		li {
 			width: 100%;
