@@ -1,9 +1,9 @@
 var config = {
-	title: "Channel logs",
+	title: "Channel",
 	port: 3000,
 	databaseName: "nodebot",
 	databaseCollections: ["logs"],
 	filter: "#channel"
 };
 
-exports.config = config;
+exports.Config = config;

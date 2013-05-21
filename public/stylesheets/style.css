@@ -3,6 +3,10 @@
     width: 100%;
     margin: 10px;
   }
+  #content ul#logs {
+    overflow: auto;
+    height: 100%;
+  }
 }
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -14,19 +18,21 @@ body a {
   width: 960px;
   margin: 0 auto;
 }
-#content ul {
+#content ul#logs {
   list-style-type: none;
   padding: 0;
+  overflow: scroll;
+  height: 500px;
 }
-#content ul li {
+#content ul#logs li {
   width: 100%;
   padding: 15px 10px;
   border: 1px solid #bbb;
   border-bottom: 0;
 }
-#content ul li:nth-child(odd) {
+#content ul#logs li:nth-child(odd) {
   background: #eee;
 }
-#content ul li:last-child {
+#content ul#logs li:last-child {
   border-bottom: 1px solid #bbb;
 }
