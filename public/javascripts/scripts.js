@@ -1,3 +1,3 @@
 $(document).ready(function() {
-	$("html, body").animate({ scrollTop: $(document).height() });
+	$("#logs").animate({ scrollTop: $("#logs").height() });
 });
