@@ -8,13 +8,15 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
+var Config = require('./config.js').Config;
+
 var startStopDaemon = require('start-stop-daemon');
 
 startStopDaemon(function() {
 	var app = express();
 
 	// all environments
-	app.set('port', process.env.PORT || 3000);
+	app.set('port', process.env.PORT || Config.port);
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
 	app.use(express.favicon());
