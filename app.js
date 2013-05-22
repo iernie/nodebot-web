@@ -35,7 +35,6 @@ if ('development' == app.get('env')) {
 }
 
 function startSocket(lastId) {
-	console.log(lastId);
 	io.sockets.on('connection', function(socket) {
 		setInterval(function() {
 	    	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
@@ -46,7 +45,6 @@ function startSocket(lastId) {
 					}
 	    			socket.emit("logs", data);
 	    			lastId = data[data.length-1]._id;
-	    			console.log(lastId);
 	    		}
 	    	});
 	    }, 1000);
@@ -60,8 +58,10 @@ startStopDaemon(function() {
 	});
 
 	db.logs.find({channel: Config.filter}).sort({$natural:-1}).limit(1, function(err, data) {
-		startSocket(data[0]._id);
-	})
+		if(!err) {
+			startSocket(data[0]._id);
+		}
+	});
 
 	app.get('/', routes.index);
 });
