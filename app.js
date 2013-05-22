@@ -51,10 +51,10 @@ startStopDaemon(function() {
 						data[i].color = md5(data[i].nick).substring(1,7);
 					}
 	    			socket.emit("logs", data);
-	    			now = moment().format("YYYY/MM/DD HH:mm:ss");
+	    			now = data[data.length-1].date;
 	    		}
 	    	});
-	    }, 1200);
+	    }, 1000);
 	});
 
 	app.get('/', routes.index);
