@@ -40,18 +40,24 @@ startStopDaemon(function() {
 		console.log('Express server listening on port ' + app.get('port'));
 	});
 
-	var now = moment().format("YYYY/MM/DD HH:mm:ss");
+	var lastId;
+	db.logs.find({channel: Config.filter}).sort({$natural:-1}).limit(1, function(err, data) {
+		lastId = data._id;
+	})
+
+	console.log(lastId);
 
 	io.sockets.on('connection', function(socket) {
 		setInterval(function() {
-	    	db.logs.find({channel: Config.filter, date: {$gt: now}}, function(err, data) {
+	    	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
 	    		if(data.length > 0) {
 	    			for (var i = 0; i < data.length; i++) {
 						data[i].message = ent.decode(data[i].message);
 						data[i].color = md5(data[i].nick).substring(1,7);
 					}
 	    			socket.emit("logs", data);
-	    			now = data[data.length-1].date;
+	    			lastId = data[data.length-1]._id;
+	    			console.log(lastId);
 	    		}
 	    	});
 	    }, 1000);
