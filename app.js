@@ -35,6 +35,7 @@ if ('development' == app.get('env')) {
 }
 
 function startSocket(lastId) {
+	console.log(lastId);
 	io.sockets.on('connection', function(socket) {
 		setInterval(function() {
 	    	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
@@ -59,7 +60,7 @@ startStopDaemon(function() {
 	});
 
 	db.logs.find({channel: Config.filter}).sort({$natural:-1}).limit(1, function(err, data) {
-		startSocket(data._id);
+		startSocket(data[0]._id);
 	})
 
 	app.get('/', routes.index);
