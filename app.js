@@ -34,19 +34,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-startStopDaemon(function() {
-
-	server.listen(app.get('port'), function(){
-		console.log('Express server listening on port ' + app.get('port'));
-	});
-
-	var lastId;
-	db.logs.find({channel: Config.filter}).sort({$natural:-1}).limit(1, function(err, data) {
-		lastId = data._id;
-	})
-
-	console.log(lastId);
-
+function startSocket(lastId) {
 	io.sockets.on('connection', function(socket) {
 		setInterval(function() {
 	    	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
@@ -62,6 +50,17 @@ startStopDaemon(function() {
 	    	});
 	    }, 1000);
 	});
+}
+
+startStopDaemon(function() {
+
+	server.listen(app.get('port'), function(){
+		console.log('Express server listening on port ' + app.get('port'));
+	});
+
+	db.logs.find({channel: Config.filter}).sort({$natural:-1}).limit(1, function(err, data) {
+		startSocket(data._id);
+	})
 
 	app.get('/', routes.index);
 });
