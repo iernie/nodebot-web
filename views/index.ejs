@@ -4,6 +4,10 @@
   	<meta charset="utf-8">
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css'>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+	<script src="/javascripts/scripts.js"></script>
   </head>
   <body>
   	<div id="content">
@@ -12,12 +16,33 @@
 	    <ul id="logs">
 			<% for(var i=0; i<logs.length; i++) { %>
 				<li>
-					<span class="date"><%= logs[i].log.date %></span> <span style="color: <%= logs[i].log.color %>"><%= logs[i].log.nick %></span>: <%= logs[i].log.message %>
+					<span class="date"><%= logs[i].date %></span> <span style="color: #<%= logs[i].color %>"><%= logs[i].nick %></span>: <%= logs[i].message %>
 				</li>
 			<% } %>
 		</ul>
+		<% if(chatty.length >= 5) { %>
+			<div class="float-left">
+				<p><%= title %> 5 most chatty</p>
+				<ol class="chatty">
+					<% for(var i=0; i<5; i++) { %>
+						<li>
+							<%= chatty[i].nick %> with a total of <%= chatty[i].count %> lines.
+						</li>
+					<% } %>
+				</ol>
+			</div>
+			<div class="float-right">
+			<p><%= title %> 5 least chatty</p>
+			<ol class="chatty">
+				<% for(var i=chatty.length - 1; i >= chatty.length - 5; i--) { %>
+					<li>
+						<%= chatty[i].nick %> with a total of <%= chatty[i].count %> lines.
+					</li>
+				<% } %>
+			</ol>
+			</div>
+			<div class="clearer"></div>
+		<% } %>
 	</div>
-	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="/javascripts/scripts.js"></script>
   </body>
 </html>

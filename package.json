@@ -10,6 +10,9 @@
     "ejs": "*",
     "less-middleware": "*",
     "start-stop-daemon": "*",
-    "ent": "*"
+    "ent": "*",
+    "MD5": "*",
+    "socket.io": "*",
+    "moment": "*"
   }
 }
