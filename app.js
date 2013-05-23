@@ -39,7 +39,6 @@ server.listen(app.get('port'), function(){
 
 db.logs.find({channel: Config.filter}).sort({$natural:-1}).limit(1, function(err, data) {
 	var lastId = data[0]._id;
-	console.log(lastId);
 	io.sockets.on('connection', function(socket) {
 		setInterval(function() {
 	    	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
@@ -49,9 +48,7 @@ db.logs.find({channel: Config.filter}).sort({$natural:-1}).limit(1, function(err
 						data[i].color = md5(data[i].nick).substring(1,7);
 					}
 					lastId = data[data.length-1]._id;
-					console.log(lastId);
 	    			socket.emit("logs", data);
-	    			console.log(data);
 	    		}
 	    	});
 	    }, 1000);
