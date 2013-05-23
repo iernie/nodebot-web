@@ -43,8 +43,8 @@ function startSocket(lastId) {
 						data[i].message = ent.decode(data[i].message);
 						data[i].color = md5(data[i].nick).substring(1,7);
 					}
+					lastId = data[data.length-1]._id;
 	    			socket.emit("logs", data);
-	    			lastId = data[data.length-1]._id;
 	    		}
 	    	});
 	    }, 1000);
