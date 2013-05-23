@@ -11,7 +11,6 @@ var express = require('express')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server)
   , Config = require('./config.js').Config
-  , moment = require("moment")
   , db = require("mongojs").connect(Config.databaseName, Config.databaseCollections)
   , md5 = require("MD5")
   , ent = require("ent");
