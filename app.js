@@ -8,9 +8,11 @@ var express = require('express')
   , Config = require('./config.js').Config
   , db = require("mongojs").connect(Config.databaseName, Config.databaseCollections)
   , md5 = require("MD5")
-  , ent = require("ent");
+  , ent = require("ent")
+  , moment = require("moment");
 
 var lastId;
+var isToday = true;
 
 function parseData(data) {
 	for (var i = 0; i < data.length; i++) {
@@ -41,11 +43,21 @@ function emitLogData(socket, limit) {
 	});
 }
 
+function emitLogDataOnDate(socket, from, to) {
+	console.log(from, to);
+	db.logs.find({channel: Config.filter, date: {$gte: from, $lt: to}}, function(err, data) {
+		if(isToday) {
+			lastId = data[data.length-1]._id;
+		}
+		socket.emit("date logs", parseData(data));
+	});
+}
+
 function emitNewLogData(socket) {
 	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
 		if(data.length > 0) {
 			lastId = data[data.length-1]._id;
-			socket.emit("logs", parseData(data));
+			socket.emit("new logs", parseData(data));
 			emitChattyData(socket);
 		}
 	});
@@ -75,8 +87,24 @@ io.sockets.on('connection', function(socket) {
 	emitLogData(socket, 500);
 	emitChattyData(socket);
 
+	socket.on('date change', function(date) {
+		var now = moment();
+		var from = moment(date, "YYYY/MM/DD HH:mm:ss");
+		var to = from.clone().add('days', 1);
+
+		if(now.diff(from, 'days') == 0) {
+			isToday = true;
+		} else {
+			isToday = false;
+		}
+
+		emitLogDataOnDate(socket, from.format("YYYY/MM/DD HH:mm:ss"), to.format("YYYY/MM/DD HH:mm:ss"));
+	});
+
 	setInterval(function() {
-		emitNewLogData(socket);
+		if(isToday) {
+			emitNewLogData(socket);
+		}
 	}, 1000);
 });
 

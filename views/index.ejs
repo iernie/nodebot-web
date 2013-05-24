@@ -4,9 +4,11 @@
   	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel='stylesheet' href='http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'>
     <link rel='stylesheet' href='/stylesheets/style.css'>
 
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 	<script src="/javascripts/scripts.js"></script>
   </head>
@@ -14,6 +16,7 @@
   	<div id="content">
 	    <h1><%= title %></h1>
 	    <p><%= title %> logs</p>
+	    Show logs by date: <input id="datepicker" type="text">
 	    <ul id="logs"></ul>
 		<div class="float-left">
 			<p><%= title %> 5 most chatty</p>
