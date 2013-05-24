@@ -1,5 +1,6 @@
 {
-  "name": "application-name",
+  "name": "nodebot-web",
+  "description": "Webview for node-bot",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -13,6 +14,12 @@
     "ent": "*",
     "MD5": "*",
     "socket.io": "*",
-    "moment": "*"
-  }
+    "moment": "*",
+    "mongojs": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/iernie/nodebot-web.git"
+  },
+  "license": "MIT"
 }

@@ -14,36 +14,16 @@
   	<div id="content">
 	    <h1><%= title %></h1>
 	    <p><%= title %> logs</p>
-	    <ul id="logs">
-			<% for(var i=0; i<logs.length; i++) { %>
-				<li>
-					<span class="date"><%= logs[i].date %></span> <span style="color: #<%= logs[i].color %>"><%= logs[i].nick %></span>: <%= logs[i].message %>
-				</li>
-			<% } %>
-		</ul>
-		<% if(chatty.length >= 5) { %>
-			<div class="float-left">
-				<p><%= title %> 5 most chatty</p>
-				<ol class="chatty">
-					<% for(var i=0; i<5; i++) { %>
-						<li>
-							<%= chatty[i].nick %> with a total of <%= chatty[i].count %> lines.
-						</li>
-					<% } %>
-				</ol>
-			</div>
-			<div class="float-right">
+	    <ul id="logs"></ul>
+		<div class="float-left">
+			<p><%= title %> 5 most chatty</p>
+			<ol id="mostChatty" class="chatty"></ol>
+		</div>
+		<div class="float-right">
 			<p><%= title %> 5 least chatty</p>
-			<ol class="chatty">
-				<% for(var i=chatty.length - 1; i >= chatty.length - 5; i--) { %>
-					<li>
-						<%= chatty[i].nick %> with a total of <%= chatty[i].count %> lines.
-					</li>
-				<% } %>
-			</ol>
-			</div>
-			<div class="clearer"></div>
-		<% } %>
+			<ol id="leastChatty" class="chatty"></ol>
+		</div>
+		<div class="clearer"></div>
 	</div>
   </body>
 </html>

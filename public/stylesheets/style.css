@@ -1,13 +1,3 @@
-@media (max-width: 960px) {
-  #content {
-    width: 100%;
-    margin: 10px;
-  }
-  #content ul#logs {
-    overflow: auto;
-    height: 100%;
-  }
-}
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -21,18 +11,60 @@ body a {
 #content ul#logs {
   list-style-type: none;
   padding: 0;
+  margin: 0;
   overflow: scroll;
-  height: 500px;
+  -webkit-overflow-scrolling: touch;
+  height: 598px;
+  border: 1px solid #bbb;
 }
 #content ul#logs li {
-  width: 100%;
+  width: 938px;
   padding: 15px 10px;
-  border: 1px solid #bbb;
-  border-bottom: 0;
+  border-bottom: 1px solid #bbb;
 }
-#content ul#logs li:nth-child(odd) {
+#content ul#logs li:nth-child(even) {
   background: #eee;
 }
 #content ul#logs li:last-child {
-  border-bottom: 1px solid #bbb;
+  border-bottom: 0;
+}
+#content ul#logs li .date {
+  color: #999;
+}
+#content ol.chatty {
+  margin: 0 0 20px 0;
+  padding-left: 25px;
+}
+#content ol.chatty li {
+  padding: 5px 0;
+}
+#content ol.chatty li:nth-child(even) {
+  background: #eee;
+}
+#content .float-left {
+  float: left;
+  width: 470px;
+}
+#content .float-right {
+  float: right;
+  width: 470px;
+}
+#content .clearer {
+  clear: both;
+}
+@media (max-width: 960px) {
+  #content {
+    width: 100% !important;
+  }
+  #content ul#logs li {
+    width: 100% !important;
+  }
+  #content .float-left {
+    clear: left !important;
+    width: 100% !important;
+  }
+  #content .float-right {
+    clear: right !important;
+    width: 100% !important;
+  }
 }

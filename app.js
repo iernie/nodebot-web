@@ -1,8 +1,3 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express')
   , app = express()
   , routes = require('./routes')
@@ -15,7 +10,47 @@ var express = require('express')
   , md5 = require("MD5")
   , ent = require("ent");
 
-// all environments
+var lastId;
+
+function parseData(data) {
+	for (var i = 0; i < data.length; i++) {
+		data[i].message = ent.decode(data[i].message);
+		data[i].color = md5(data[i].nick).substring(1,7);
+	}
+	return data;
+}
+
+function emitChattyData(socket) {
+	db.logs.group({
+		key: {nick: true},
+		cond: {channel: Config.filter},
+		reduce: function(o,p){p.count += 1;},
+		initial: {count:0}
+	}, function(err, data) {
+		data = data.sort(function(a,b) { return parseInt(b.count) - parseInt(a.count) } );
+		socket.emit("chatty", data);
+	});
+}
+
+function emitLogData(socket, limit) {
+	db.logs.find({channel: Config.filter}).limit(limit, function(err, data) {
+		if(data.length > 0) {
+			lastId = data[data.length-1]._id;
+			socket.emit("logs", parseData(data));
+		}
+	});
+}
+
+function emitNewLogData(socket) {
+	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
+		if(data.length > 0) {
+			lastId = data[data.length-1]._id;
+			socket.emit("logs", parseData(data));
+			emitChattyData(socket);
+		}
+	});
+}
+
 app.set('port', process.env.PORT || Config.port);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -36,22 +71,13 @@ server.listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
 });
 
-db.logs.find({channel: Config.filter}).sort({$natural:-1}).limit(1, function(err, data) {
-	var lastId = data[0]._id;
-	io.sockets.on('connection', function(socket) {
-		setInterval(function() {
-	    	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
-	    		if(data.length > 0) {
-	    			for (var i = 0; i < data.length; i++) {
-						data[i].message = ent.decode(data[i].message);
-						data[i].color = md5(data[i].nick).substring(1,7);
-					}
-					lastId = data[data.length-1]._id;
-	    			socket.emit("logs", data);
-	    		}
-	    	});
-	    }, 1000);
-	});
+io.sockets.on('connection', function(socket) {
+	emitLogData(socket, 500);
+	emitChattyData(socket);
+
+	setInterval(function() {
+		emitNewLogData(socket);
+	}, 1000);
 });
 
 app.get('/', routes.index);
