@@ -11,9 +11,6 @@ var express = require('express')
   , ent = require("ent")
   , moment = require("moment");
 
-var lastId;
-var isToday = true;
-
 function parseData(data) {
 	for (var i = 0; i < data.length; i++) {
 		data[i].message = ent.decode(data[i].message);
@@ -22,7 +19,7 @@ function parseData(data) {
 	return data;
 }
 
-function emitChattyData() {
+function emitChattyData(socket) {
 	db.logs.group({
 		key: {nick: true},
 		cond: {channel: Config.filter},
@@ -30,34 +27,36 @@ function emitChattyData() {
 		initial: {count:0}
 	}, function(err, data) {
 		data = data.sort(function(a,b) { return parseInt(b.count) - parseInt(a.count) } );
-		io.sockets.emit("chatty", data);
+		socket.emit("chatty", data);
+		
 	});
 }
 
-function emitLogData(limit) {
+function emitLogData(socket, limit) {
 	db.logs.find({channel: Config.filter}).limit(limit, function(err, data) {
 		if(data.length > 0) {
-			lastId = data[data.length-1]._id;
-			io.sockets.emit("logs", parseData(data));
+			socket.lastId = data[data.length-1]._id;
+			socket.emit("logs", parseData(data));
+			
 		}
 	});
 }
 
-function emitLogDataOnDate(from, to) {
+function emitLogDataOnDate(socket, from, to) {
 	console.log(from, to);
 	db.logs.find({channel: Config.filter, date: {$gte: from, $lt: to}}, function(err, data) {
-		if(isToday) {
-			lastId = data[data.length-1]._id;
+		if(socket.isToday) {
+			socket.lastId = data[data.length-1]._id;
 		}
-		io.sockets.emit("date logs", parseData(data));
+		socket.emit("date logs", parseData(data));
 	});
 }
 
-function emitNewLogData() {
-	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
+function emitNewLogData(socket) {
+	db.logs.find({channel: Config.filter, _id: {$gt: socket.lastId}}, function(err, data) {
 		if(data.length > 0) {
-			lastId = data[data.length-1]._id;
-			io.sockets.emit("new logs", parseData(data));
+			socket.lastId = data[data.length-1]._id;
+			socket.emit("new logs", parseData(data));
 			emitChattyData(socket);
 		}
 	});
@@ -84,8 +83,10 @@ server.listen(app.get('port'), function(){
 });
 
 io.sockets.on('connection', function(socket) {
-	emitLogData(500);
-	emitChattyData();
+	socket.isToday = true;
+
+	emitLogData(socket, 500);
+	emitChattyData(socket);
 
 	socket.on('date change', function(date) {
 		var now = moment();
@@ -93,17 +94,17 @@ io.sockets.on('connection', function(socket) {
 		var to = from.clone().add('days', 1);
 
 		if(now.diff(from, 'days') == 0) {
-			isToday = true;
+			socket.isToday = true;
 		} else {
-			isToday = false;
+			socket.isToday = false;
 		}
 
-		emitLogDataOnDate(from.format("YYYY/MM/DD HH:mm:ss"), to.format("YYYY/MM/DD HH:mm:ss"));
+		emitLogDataOnDate(socket, from.format("YYYY/MM/DD HH:mm:ss"), to.format("YYYY/MM/DD HH:mm:ss"));
 	});
 
 	setInterval(function() {
-		if(isToday) {
-			emitNewLogData();
+		if(socket.isToday) {
+			emitNewLogData(socket);
 		}
 	}, 1000);
 });
