@@ -22,7 +22,7 @@ function parseData(data) {
 	return data;
 }
 
-function emitChattyData(socket) {
+function emitChattyData() {
 	db.logs.group({
 		key: {nick: true},
 		cond: {channel: Config.filter},
@@ -30,34 +30,34 @@ function emitChattyData(socket) {
 		initial: {count:0}
 	}, function(err, data) {
 		data = data.sort(function(a,b) { return parseInt(b.count) - parseInt(a.count) } );
-		socket.emit("chatty", data);
+		io.sockets.emit("chatty", data);
 	});
 }
 
-function emitLogData(socket, limit) {
+function emitLogData(limit) {
 	db.logs.find({channel: Config.filter}).limit(limit, function(err, data) {
 		if(data.length > 0) {
 			lastId = data[data.length-1]._id;
-			socket.emit("logs", parseData(data));
+			io.sockets.emit("logs", parseData(data));
 		}
 	});
 }
 
-function emitLogDataOnDate(socket, from, to) {
+function emitLogDataOnDate(from, to) {
 	console.log(from, to);
 	db.logs.find({channel: Config.filter, date: {$gte: from, $lt: to}}, function(err, data) {
 		if(isToday) {
 			lastId = data[data.length-1]._id;
 		}
-		socket.emit("date logs", parseData(data));
+		io.sockets.emit("date logs", parseData(data));
 	});
 }
 
-function emitNewLogData(socket) {
+function emitNewLogData() {
 	db.logs.find({channel: Config.filter, _id: {$gt: lastId}}, function(err, data) {
 		if(data.length > 0) {
 			lastId = data[data.length-1]._id;
-			socket.emit("new logs", parseData(data));
+			io.sockets.emit("new logs", parseData(data));
 			emitChattyData(socket);
 		}
 	});
@@ -84,8 +84,8 @@ server.listen(app.get('port'), function(){
 });
 
 io.sockets.on('connection', function(socket) {
-	emitLogData(socket, 500);
-	emitChattyData(socket);
+	emitLogData(500);
+	emitChattyData();
 
 	socket.on('date change', function(date) {
 		var now = moment();
@@ -98,12 +98,12 @@ io.sockets.on('connection', function(socket) {
 			isToday = false;
 		}
 
-		emitLogDataOnDate(socket, from.format("YYYY/MM/DD HH:mm:ss"), to.format("YYYY/MM/DD HH:mm:ss"));
+		emitLogDataOnDate(from.format("YYYY/MM/DD HH:mm:ss"), to.format("YYYY/MM/DD HH:mm:ss"));
 	});
 
 	setInterval(function() {
 		if(isToday) {
-			emitNewLogData(socket);
+			emitNewLogData();
 		}
 	}, 1000);
 });
