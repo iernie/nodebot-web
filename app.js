@@ -75,7 +75,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
+}
+
+if ('production' == app.get('env')) {
+	app.use(express.errorHandler()); 
+	io.enable('browser client minification');
+	io.enable('browser client etag');
+	io.enable('browser client gzip');
+	io.set('log level', 1);
 }
 
 server.listen(app.get('port'), function(){
