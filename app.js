@@ -6,7 +6,7 @@ var express = require('express')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server)
   , Config = require('./config.js').Config
-  , db = require("mongojs").connect(Config.databaseName, Config.databaseCollections)
+  , dbCollection = require("mongojs").connect(Config.databaseName).collection(Config.databaseCollection)
   , md5 = require("MD5")
   , ent = require("ent")
   , moment = require("moment");
@@ -20,7 +20,7 @@ function parseData(data) {
 }
 
 function emitChattyData(socket) {
-	db.logs.group({
+	dbCollection.group({
 		key: {nick: true},
 		cond: {channel: Config.filter},
 		reduce: function(o,p){p.count += 1;},
@@ -28,23 +28,21 @@ function emitChattyData(socket) {
 	}, function(err, data) {
 		data = data.sort(function(a,b) { return parseInt(b.count) - parseInt(a.count) } );
 		socket.emit("chatty", data);
-		
 	});
 }
 
 function emitLogData(socket, limit) {
-	db.logs.find({channel: Config.filter}).limit(limit, function(err, data) {
+	dbCollection.find({channel: Config.filter}).limit(limit, function(err, data) {
 		if(data.length > 0) {
 			socket.lastId = data[data.length-1]._id;
 			socket.emit("logs", parseData(data));
-			
 		}
 	});
 }
 
 function emitLogDataOnDate(socket, from, to) {
 	console.log(from, to);
-	db.logs.find({channel: Config.filter, date: {$gte: from, $lt: to}}, function(err, data) {
+	dbCollection.find({channel: Config.filter, date: {$gte: from, $lt: to}}, function(err, data) {
 		if(socket.isToday) {
 			socket.lastId = data[data.length-1]._id;
 		}
@@ -53,7 +51,7 @@ function emitLogDataOnDate(socket, from, to) {
 }
 
 function emitNewLogData(socket) {
-	db.logs.find({channel: Config.filter, _id: {$gt: socket.lastId}}, function(err, data) {
+	dbCollection.find({channel: Config.filter, _id: {$gt: socket.lastId}}, function(err, data) {
 		if(data.length > 0) {
 			socket.lastId = data[data.length-1]._id;
 			socket.emit("new logs", parseData(data));
@@ -73,7 +71,6 @@ app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// development only
 if ('development' == app.get('env')) {
 	app.use(express.errorHandler());
 }
