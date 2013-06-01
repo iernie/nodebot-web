@@ -14,7 +14,7 @@ $(document).ready(function() {
 	$("#datepicker").datepicker({ 
 	    dateFormat: "yy/mm/dd",
 	    defaultDate: 0,
-	    maxDate: 1,
+	    maxDate: 0,
 	    changeMonth: true,
 	    changeYear: true,
 	    onSelect: function(dateText, inst) {
