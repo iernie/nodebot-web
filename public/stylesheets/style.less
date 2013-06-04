@@ -1,11 +1,7 @@
 body {
     font-family: 'Open Sans', sans-serif;
-    background: #191818;
-    color: #999;
-
-    h1, h2, h3 {
-        color: #fff;
-    }
+    background: #f1f1f1;
+    color: #222;
 
     a {
         color: #00B7FF;
@@ -21,29 +17,29 @@ body {
     width: 960px;
     margin: 0 auto;
 
-    #date {
+    #menu {
         padding: 0 0 5px 0;
 
         input {
             margin: 0 0 0 5px;
-            border: 1px solid #2a2a2a;
+            border: 1px solid #ccc;
             border-radius: 3px;
             padding: 5px 1px;
             width: 80px;
-            background: #222;
-            color: #ccc;
+            background: #ddd;
             text-align: center;
         }
-    }
 
-    #scroll {
-        text-align: right;
-        padding: 0 0 5px 0;
-        font-size: 0.8em;
+        #scroll {
+            text-align: right;
+            font-size: 0.8em;
+            float: right;
+        }
     }
 
     ul#logs {
         list-style-type: none;
+        width: 958px;
         padding: 0;
         margin: 0;
         overflow: scroll;
@@ -90,7 +86,7 @@ body {
             font-weight: 400;
 
             &:nth-child(even) {
-                background: #222;
+                background: #ddd;
             }
         }
     }

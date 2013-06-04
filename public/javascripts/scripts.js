@@ -60,7 +60,7 @@ $(document).ready(function() {
     });
 
     socket.on('logs', function(data) {
-        $("#datepicker").datepicker('setDate', new Date(data[data.length-1].date));
+        $("#datepicker").datepicker('setDate', new Date(data[0].date));
         $("#logs").html('');
         for (var i = data.length-1; i >= 0; i--) {
             $("#logs").append('<li><span class="date">&#91;' + data[i].date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data[i].color + '">&lt;' + data[i].nick + "&gt;</span> " + data[i].message + '</li>');
