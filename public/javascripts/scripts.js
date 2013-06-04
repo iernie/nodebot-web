@@ -6,6 +6,11 @@ function scrollToTop() {
     $("#logs").scrollTop(0);
 }
 
+function isScrolledToBottom() {
+    var logs = $("#logs")[0];
+    return (logs.scrollTop >= (logs.scrollHeight - logs.offsetHeight));
+}
+
 function showNewLogsMessage(logs) {
     var totalNumberOfLogs = parseInt($("#number-of-new-logs").html()) + logs;
     $("#number-of-new-logs").html(totalNumberOfLogs);
@@ -51,10 +56,15 @@ $(document).ready(function() {
     });
 
     socket.on('new logs', function(data) {
+        var scrollToBottom = isScrolledToBottom();
         for (var i = 0; i < data.length; i++) {
             $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
         }
-        showNewLogsMessage(data.length);
+        if(scrollToBottom) {
+            scrollToBottom();
+        } else {
+            showNewLogsMessage(data.length);
+        }
     });
 
     socket.on('chatty', function(data) {
