@@ -32,7 +32,7 @@ function emitChattyData(socket) {
 }
 
 function emitLogData(socket, limit, ascending) {
-	dbCollection.find({channel: Config.filter}).sort({$natural: (ascending ? 1 : -1)}).limit(limit, function(err, data) {
+	dbCollection.find({channel: Config.filter}).sort({$natural: (ascending ? -1 : 1)}).limit(limit, function(err, data) {
 		if(data.length > 0) {
 			socket.lastId = data[data.length-1]._id;
 			socket.emit("logs", parseData(data));
