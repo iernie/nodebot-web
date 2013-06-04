@@ -17,8 +17,12 @@
     <body>
         <div id="content">
             <h1><%= title %></h1>
-            <h2>Logs</h2>
-            <p>Showing logs for: <input id="datepicker" type="text"></p>
+            <div id="date" class="float-left">
+                Showing logs for: <input id="datepicker" type="text">
+            </div>
+            <div id="scroll" class="float-right">
+                <a id="scroll-to-bottom" href="#">Scroll to bottom</a>
+            </div>
             <ul id="logs"></ul>
             <div id="new-logs-message"><a href="#"><span id="number-of-new-logs">0</span> new message(s)!</a></div>
 

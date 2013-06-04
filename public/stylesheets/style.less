@@ -15,6 +15,23 @@ body {
     width: 960px;
     margin: 0 auto;
 
+    #date {
+        padding: 0 0 5px 0;
+
+        input {
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            padding: 5px 0;
+            width: 80px;
+            text-align: center;
+        }
+    }
+
+    #scroll {
+        text-align: right;
+        padding: 0 0 5px 0;
+    }
+
     ul#logs {
         list-style-type: none;
         padding: 0;
@@ -25,6 +42,7 @@ body {
         border: 1px solid #000;
         background-color: #222;
         color: #f1f1f1;
+        .clearfix;
 
         li {
             width: 938px;
@@ -74,6 +92,27 @@ body {
         float: right;
         width: 460px;
     }
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+ 
+.clearfix {
+    display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+    display: block;
+}
+ 
+* html .clearfix {
+    height: 1%;
 }
 
 @media (max-width: 960px) {

@@ -34,6 +34,11 @@ $(document).ready(function() {
         $("#new-logs-message").hide();
     });
 
+    $("#scroll a").on('click', function(e) {
+        e.preventDefault();
+        scrollToBottom();
+    });
+
     $("#datepicker").datepicker({ 
         dateFormat: "yy/mm/dd",
         defaultDate: 0,
@@ -49,7 +54,7 @@ $(document).ready(function() {
     socket.on('date logs', function(data) {
         $("#logs").html('');
         for (var i = 0; i < data.length; i++) {
-            $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span class="color" style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
+            $("#logs").append('<li><span class="date">&#91;' + data[i].date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data[i].color + '">&lt;' + data[i].nick + "&gt;</span> " + data[i].message + '</li>');
         }
         scrollToTop();
     });
@@ -58,7 +63,7 @@ $(document).ready(function() {
         $("#datepicker").datepicker('setDate', new Date(data[data.length-1].date));
         $("#logs").html('');
         for (var i = data.length-1; i >= 0; i--) {
-            $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span class="color" style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
+            $("#logs").append('<li><span class="date">&#91;' + data[i].date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data[i].color + '">&lt;' + data[i].nick + "&gt;</span> " + data[i].message + '</li>');
         }
         scrollToBottom();
     });
@@ -66,7 +71,7 @@ $(document).ready(function() {
     socket.on('new logs', function(data) {
         var shouldScrollToBottom = isScrolledToBottom();
         for (var i = 0; i < data.length; i++) {
-            $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span class="color" style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
+            $("#logs").append('<li><span class="date">&#91;' + data[i].date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data[i].color + '">&lt;' + data[i].nick + "&gt;</span> " + data[i].message + '</li>');
         }
         if(shouldScrollToBottom) {
             scrollToBottom();
