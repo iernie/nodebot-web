@@ -56,11 +56,11 @@ $(document).ready(function() {
     });
 
     socket.on('new logs', function(data) {
-        var scrollToBottom = isScrolledToBottom();
+        var shouldScrollToBottom = isScrolledToBottom();
         for (var i = 0; i < data.length; i++) {
             $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
         }
-        if(scrollToBottom) {
+        if(shouldScrollToBottom) {
             scrollToBottom();
         } else {
             showNewLogsMessage(data.length);
