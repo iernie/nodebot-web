@@ -11,7 +11,6 @@
     "ejs": "*",
     "less-middleware": "*",
     "forever": "*",
-    "ent": "*",
     "MD5": "*",
     "socket.io": "*",
     "moment": "*",

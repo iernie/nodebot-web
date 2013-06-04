@@ -8,12 +8,10 @@ var express = require('express')
   , Config = require('./config.js').Config
   , dbCollection = require("mongojs").connect(Config.databaseName).collection(Config.databaseCollection)
   , md5 = require("MD5")
-  , ent = require("ent")
   , moment = require("moment");
 
 function parseData(data) {
 	for (var i = 0; i < data.length; i++) {
-		data[i].message = ent.decode(data[i].message);
 		data[i].color = md5(data[i].nick).substring(1,7);
 	}
 	return data;
