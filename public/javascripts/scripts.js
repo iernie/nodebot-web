@@ -49,15 +49,16 @@ $(document).ready(function() {
     socket.on('date logs', function(data) {
         $("#logs").html('');
         for (var i = 0; i < data.length; i++) {
-            $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
+            $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span class="color" style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
         }
         scrollToTop();
     });
 
     socket.on('logs', function(data) {
+        $("#datepicker").datepicker('setDate', new Date(data[data.length-1].date));
         $("#logs").html('');
         for (var i = data.length-1; i >= 0; i--) {
-            $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
+            $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span class="color" style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
         }
         scrollToBottom();
     });
@@ -65,7 +66,7 @@ $(document).ready(function() {
     socket.on('new logs', function(data) {
         var shouldScrollToBottom = isScrolledToBottom();
         for (var i = 0; i < data.length; i++) {
-            $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
+            $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span class="color" style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
         }
         if(shouldScrollToBottom) {
             scrollToBottom();
@@ -84,5 +85,9 @@ $(document).ready(function() {
         for (var i = data.length-1; i >= data.length-numberOfUsers; i--) {
             $("#leastChatty").append('<li>' + data[i].nick + " with a total of " + data[i].count + ' lines.</li>');
         }
+    });
+
+    socket.on('no logs', function() {
+        $("#logs").html('');
     });
 });

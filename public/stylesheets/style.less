@@ -1,91 +1,98 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
 
-  a {
-	  color: #00B7FF;
-	}
+    a {
+        color: #00B7FF;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 #content {
-	width: 960px;
-	margin: 0 auto;
+    width: 960px;
+    margin: 0 auto;
 
-	ul#logs {
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-		overflow: scroll;
-		-webkit-overflow-scrolling: touch;
-		height: 598px;
-		border: 1px solid #bbb;
+    ul#logs {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+        height: 398px;
+        border: 1px solid #bbb;
 
-		li {
-			width: 938px;
-			padding: 15px 10px;
-			border-bottom: 1px solid #bbb;
+        li {
+            width: 938px;
+            padding: 10px 10px;
+            font-weight: 300;
 
-			&:nth-child(even) {
-				background: #eee;
-			}
+            &:nth-child(even) {
+                background: #eee;
+            }
 
-			.date {
-				color: #999;
-			}
-		}
-	}
+            .color {
+                font-weight: 500;
+            }
 
-	#new-logs-message {
-		padding: 15px 10px;
-		text-align: center;
-	}
+            .date {
+                color: #999;
+                font-weight: 100;
+            }
+        }
+    }
 
-	ol.chatty {
-		margin: 0 0 20px 0;
-		padding-left: 25px;
+    #new-logs-message {
+        padding: 15px 10px;
+        text-align: center;
+    }
 
-		li {
-			padding: 5px 0;
+    ol.chatty {
+        margin: 0 0 20px 0;
+        padding-left: 25px;
 
-			&:nth-child(even) {
-				background: #eee;
-			}
-		}
-	}
+        li {
+            padding: 5px;
+            font-weight: 300;
 
-	.float-left {
-		float: left;
-		width: 470px;
-	}
+            &:nth-child(even) {
+                background: #eee;
+            }
+        }
+    }
 
-	.float-right {
-		float: right;
-		width: 470px;
-	}
+    .float-left {
+        float: left;
+        width: 460px;
+    }
 
-	.clearer {
-		clear: both;
-	}
+    .float-right {
+        float: right;
+        width: 460px;
+    }
 }
 
 @media (max-width: 960px) {
-	#content {
-		width: 100% !important;
+    #content {
+        width: 100% !important;
 
-		ul#logs {
+        ul#logs {
 
-			li {
-				width: 100% !important;
-			}
-		}
+            li {
+                width: 100% !important;
+            }
+        }
 
-		.float-left {
-			clear: left !important;
-			width: 100% !important;
-		}
+        .float-left {
+            clear: left !important;
+            width: 100% !important;
+        }
 
-		.float-right {
-			clear: right !important;
-			width: 100% !important;
-		}
-	}
+        .float-right {
+            clear: right !important;
+            width: 100% !important;
+        }
+    }
 }

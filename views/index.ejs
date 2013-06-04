@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link rel='stylesheet' href='http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'>
-    <link rel='stylesheet' href='/stylesheets/style.css'>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title><%= title %> stats</title>
+        
+        <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700'>
+        <link rel='stylesheet' href='http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'>
+        <link rel='stylesheet' href='/stylesheets/style.css'>
 
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-	<script src="/javascripts/scripts.js"></script>
-  </head>
-  <body>
-  	<div id="content">
-	    <h1><%= title %></h1>
-	    <p><%= title %> logs</p>
-	    Show logs by date: <input id="datepicker" type="text">
-	    <ul id="logs"></ul>
-	    <div id="new-logs-message"><a href="#"><span id="number-of-new-logs">0</span> new message(s)!</a></div>
-		<div class="float-left">
-			<p><%= title %> 5 most chatty</p>
-			<ol id="mostChatty" class="chatty"></ol>
-		</div>
-		<div class="float-right">
-			<p><%= title %> 5 least chatty</p>
-			<ol id="leastChatty" class="chatty"></ol>
-		</div>
-		<div class="clearer"></div>
-	</div>
-  </body>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/javascripts/scripts.js"></script>
+    </head>
+    <body>
+        <div id="content">
+            <h1><%= title %></h1>
+            <h2>Logs</h2>
+            <p>Showing logs for: <input id="datepicker" type="text"></p>
+            <ul id="logs"></ul>
+            <div id="new-logs-message"><a href="#"><span id="number-of-new-logs">0</span> new message(s)!</a></div>
+
+            <div class="float-left">
+                <h3>5 most chatty</h3>
+                <ol id="mostChatty" class="chatty"></ol>
+            </div>
+
+            <div class="float-right">
+                <h3>5 least chatty</h3>
+                <ol id="leastChatty" class="chatty"></ol>
+            </div>
+        </div>
+    </body>
 </html>
