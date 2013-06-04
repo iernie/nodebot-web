@@ -31,10 +31,10 @@ function emitChattyData(socket) {
 	});
 }
 
-function emitLogData(socket, limit, ascending) {
-	dbCollection.find({channel: Config.filter}).sort({$natural: (ascending ? -1 : 1)}).limit(limit, function(err, data) {
+function emitLogData(socket, limit) {
+	dbCollection.find({channel: Config.filter}).sort({$natural: -1)}).limit(limit, function(err, data) {
 		if(data.length > 0) {
-			socket.lastId = data[data.length-1]._id;
+			socket.lastId = data[0]._id;
 			socket.emit("logs", parseData(data));
 		}
 	});
@@ -90,7 +90,7 @@ server.listen(app.get('port'), function(){
 io.sockets.on('connection', function(socket) {
 	socket.isToday = true;
 
-	emitLogData(socket, 500, false);
+	emitLogData(socket, 500);
 	emitChattyData(socket);
 
 	socket.on('date change', function(date) {

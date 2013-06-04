@@ -44,7 +44,7 @@ $(document).ready(function() {
 
     socket.on('logs', function(data) {
         $("#logs").html('');
-        for (var i = 0; i < data.length; i++) {
+        for (var i = data.length-1; i >= 0; i--) {
             $("#logs").append('<li><span class="date">' + data[i].date + '</span> <span style="color: #' + data[i].color + '">' + data[i].nick + "</span>: " + data[i].message + '</li>');
         }
         scrollToBottom();
