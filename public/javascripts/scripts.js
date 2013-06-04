@@ -14,7 +14,7 @@ function isScrolledToBottom() {
 function showNewLogsMessage(logs) {
     var totalNumberOfLogs = parseInt($("#number-of-new-logs").html()) + logs;
     $("#number-of-new-logs").html(totalNumberOfLogs);
-    $("#new-logs-message").show();
+    $("#new-logs-message").slideDown();
 }
 
 $(document).ready(function() {
@@ -23,7 +23,7 @@ $(document).ready(function() {
     $("#logs").scroll(function() {
         if (isScrolledToBottom()) {
             $("#number-of-new-logs").html("0");
-            $("#new-logs-message").hide();
+            $("#new-logs-message").slideUp();
         }
     })
 
@@ -31,7 +31,7 @@ $(document).ready(function() {
     $("#new-logs-message a").on('click', function(e) {
         e.preventDefault();
         scrollToBottom();
-        $("#new-logs-message").hide();
+        $("#new-logs-message").slideUp();
     });
 
     $("#scroll a").on('click', function(e) {
