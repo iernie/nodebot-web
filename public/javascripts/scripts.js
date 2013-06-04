@@ -20,6 +20,13 @@ function showNewLogsMessage(logs) {
 $(document).ready(function() {
     var socket = io.connect('http://localhost:3000');
 
+    $("#logs").scroll(function() {
+        if (isScrolledToBottom()) {
+            $("#number-of-new-logs").html("0");
+            $("#new-logs-message").hide();
+        }
+    })
+
     $("#new-logs-message").hide();
     $("#new-logs-message a").on('click', function(e) {
         e.preventDefault();
