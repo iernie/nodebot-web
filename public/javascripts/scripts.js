@@ -7,7 +7,7 @@ function scrollToTop() {
 }
 
 function showNewLogsMessage(logs) {
-    var totalNumberOfLogs = $("#number-of-new-logs").html() + logs;
+    var totalNumberOfLogs = parseInt($("#number-of-new-logs").html()) + logs;
     $("#number-of-new-logs").html(totalNumberOfLogs);
     $("#new-logs-message").show();
 }
