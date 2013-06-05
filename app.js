@@ -105,7 +105,7 @@ io.sockets.on('connection', function(socket) {
 		date = moment(date);
 		if(date.isValid()) {
 
-			if(moment().diff(date, 'days') == 0) {
+			if(moment().diff(date, 'days') == 0 && search == "") {
 				socket.isToday = true;
 			} else {
 				socket.isToday = false;
