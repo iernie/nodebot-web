@@ -55,8 +55,12 @@ $(document).ready(function() {
         changeMonth: true,
         changeYear: true,
         onSelect: function(dateText, inst) {
-            socket.emit("date change", $('#datepicker').datepicker('getDate'));
+            socket.emit("date change", $("#search").val(), $('#datepicker').datepicker('getDate'));
         }
+    });
+
+    $("#search").on('change', function() {
+        socket.emit("date change", $(this).val(), $('#datepicker').datepicker('getDate'));
     });
 
     socket.on('date logs', function(data) {
