@@ -17,17 +17,26 @@ function showNewLogsMessage(logs) {
     $("#new-logs-message").slideDown();
 }
 
+function makeLogLine(data) {
+    return '<li><span class="date">&#91;' + data.date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data.color + '">&lt;' + data.nick + "&gt;</span> " + data.message + '</li>';
+}
+
+function makeChattyLine(data) {
+    return '<li>' + data.nick + " with a total of " + data.count + ' lines.</li>';
+}
+
 $(document).ready(function() {
     var socket = io.connect('http://localhost:3000');
+    $("#new-logs-message").hide();
 
     $("#logs").scroll(function() {
         if (isScrolledToBottom()) {
-            $("#number-of-new-logs").html("0");
-            $("#new-logs-message").slideUp();
+            $("#new-logs-message").slideUp(function() {
+                $("#number-of-new-logs").html("0");
+            });
         }
     })
 
-    $("#new-logs-message").hide();
     $("#new-logs-message a").on('click', function(e) {
         e.preventDefault();
         scrollToBottom();
@@ -46,15 +55,14 @@ $(document).ready(function() {
         changeMonth: true,
         changeYear: true,
         onSelect: function(dateText, inst) {
-            var date = $.datepicker.formatDate("yy/mm/dd 00:00:00", $('#datepicker').datepicker('getDate'));
-            socket.emit("date change", date);
+            socket.emit("date change", $('#datepicker').datepicker('getDate'));
         }
     });
 
     socket.on('date logs', function(data) {
         $("#logs").html('');
         for (var i = 0; i < data.length; i++) {
-            $("#logs").append('<li><span class="date">&#91;' + data[i].date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data[i].color + '">&lt;' + data[i].nick + "&gt;</span> " + data[i].message + '</li>');
+            $("#logs").append(makeLogLine(data[i]));
         }
         scrollToTop();
     });
@@ -63,7 +71,7 @@ $(document).ready(function() {
         $("#datepicker").datepicker('setDate', new Date(data[0].date));
         $("#logs").html('');
         for (var i = data.length-1; i >= 0; i--) {
-            $("#logs").append('<li><span class="date">&#91;' + data[i].date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data[i].color + '">&lt;' + data[i].nick + "&gt;</span> " + data[i].message + '</li>');
+            $("#logs").append(makeLogLine(data[i]));
         }
         scrollToBottom();
     });
@@ -71,7 +79,7 @@ $(document).ready(function() {
     socket.on('new logs', function(data) {
         var shouldScrollToBottom = isScrolledToBottom();
         for (var i = 0; i < data.length; i++) {
-            $("#logs").append('<li><span class="date">&#91;' + data[i].date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data[i].color + '">&lt;' + data[i].nick + "&gt;</span> " + data[i].message + '</li>');
+            $("#logs").append(makeLogLine(data[i]));
         }
         if(shouldScrollToBottom) {
             scrollToBottom();
@@ -84,11 +92,11 @@ $(document).ready(function() {
         var numberOfUsers = data.length >= 5 ? 5 : data.length;
         $("#mostChatty").html('');
         for (var i = 0; i < numberOfUsers; i++) {
-            $("#mostChatty").append('<li>' + data[i].nick + " with a total of " + data[i].count + ' lines.</li>');
+            $("#mostChatty").append(makeChattyLine(data[i]));
         }
         $("#leastChatty").html('')
         for (var i = data.length-1; i >= data.length-numberOfUsers; i--) {
-            $("#leastChatty").append('<li>' + data[i].nick + " with a total of " + data[i].count + ' lines.</li>');
+            $("#leastChatty").append(makeChattyLine(data[i]));
         }
     });
 

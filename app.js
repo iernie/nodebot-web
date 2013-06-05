@@ -38,9 +38,9 @@ function emitLogData(socket, limit) {
 	});
 }
 
-function emitLogDataOnDate(socket, from, to) {
-	console.log(from, to);
-	dbCollection.find({channel: Config.filter, date: {$gte: from, $lt: to}}, function(err, data) {
+function emitLogDataOnDate(socket, date) {
+	var endDate = date.clone().add('days', 1);
+	dbCollection.find({channel: Config.filter, date: {$gte: date.format("YYYY/MM/DD HH:mm:ss"), $lt: endDate.format("YYYY/MM/DD HH:mm:ss")}}, function(err, data) {
 		if(data.length > 0) {
 			if(socket.isToday) {
 				socket.lastId = data[data.length-1]._id;
@@ -96,17 +96,16 @@ io.sockets.on('connection', function(socket) {
 	emitChattyData(socket);
 
 	socket.on('date change', function(date) {
-		var from = moment(date, "YYYY/MM/DD HH:mm:ss");
-		if(from.isValid()) {
-			var to = from.clone().add('days', 1);
+		date = moment(date);
+		if(date.isValid()) {
 
-			if(moment().diff(from, 'days') == 0) {
+			if(moment().diff(date, 'days') == 0) {
 				socket.isToday = true;
 			} else {
 				socket.isToday = false;
 			}
 
-			emitLogDataOnDate(socket, from.format("YYYY/MM/DD HH:mm:ss"), to.format("YYYY/MM/DD HH:mm:ss"));
+			emitLogDataOnDate(socket, date);
 		}
 	});
 
