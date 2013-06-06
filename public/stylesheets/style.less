@@ -56,11 +56,14 @@ body {
             text-align: right;
             font-size: 0.8em;
             float: right;
+            margin: 10px 0 0 0;
         }
     }
 
     ul#logs {
         box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
         list-style-type: none;
         width: 960px;
         padding: 0;
@@ -75,13 +78,15 @@ body {
 
         li {
             box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
             width: 958px;
             padding: 10px 10px 10px 80px;
             font-weight: 300;
             font-size: 0.9em;
             text-indent: -70px;
 
-            &:nth-child(even) {
+            &:nth-child(odd) {
                 background: #333;
             }
 
