@@ -63,12 +63,26 @@ $(document).ready(function() {
         }
     });
 
-    $("#search, #search-type").on('change', function() {
-        if($("#search").val() != "") {
-            $("#datepicker").prop('disabled', true);
-        } else {
-            $("#datepicker").prop('disabled', false);
-        }
+    var delay = (function(){
+        var timer = 0;
+        return function(callback, ms){
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+    $("#search").on('keyup', function() {
+        delay(function(){
+            if($("#search").val() != "") {
+                $("#datepicker").prop('disabled', true);
+            } else {
+                $("#datepicker").prop('disabled', false);
+            }
+            socket.emit("search", $("#search-type").find(":selected").val(), $("#search").val());
+        }, 1000 ); 
+    });
+
+    $("#search-type").on('change', function() {
         socket.emit("search", $("#search-type").find(":selected").val(), $("#search").val());
     });
 
