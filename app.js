@@ -130,6 +130,7 @@ io.sockets.on('connection', function(socket) {
 
 	socket.on('search', function(search, date) {
 		if(search != "") {
+			socket.isToday = false;
 			emitSearchData(socket, search);
 		} else {
 			date = moment(date);
