@@ -80,7 +80,7 @@ $(document).ready(function() {
         for (var i = 0; i < data.length; i++) {
             $("#logs").append(makeLogSearchLine(data[i]));
         }
-        scrollToTop();
+        scrollToBottom();
     });
 
     socket.on('logs', function(data) {
