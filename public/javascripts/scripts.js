@@ -63,12 +63,8 @@ $(document).ready(function() {
         }
     });
 
-    $("#search-log").on('change', function() {
-        socket.emit("search log", $(this).val(), $('#datepicker').datepicker('getDate'));
-    });
-
-    $("#search-nick").on('change', function() {
-        socket.emit("search nick", $(this).val(), $('#datepicker').datepicker('getDate'));
+    $("#search, #search-type").on('change', function() {
+        socket.emit("search", $("#search-type").find(":selected").val(), $("#search").val());
     });
 
     socket.on('date logs', function(data) {
