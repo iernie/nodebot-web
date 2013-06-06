@@ -55,10 +55,26 @@ function emitLogDataOnDate(socket, date) {
 	});
 }
 
-function emitSearchData(socket, search) {
+function emitSearchLogData(socket, search) {
 
 	var searchCriteria = {
-		$or: [{message: { $regex: search, $options: 'i' }}, {nick: { $regex: search, $options: 'i' }}],
+		message: { $regex: search, $options: 'i' },
+		channel: Config.filter
+	};
+
+	dbCollection.find(searchCriteria, function(err, data) {
+		if(data.length > 0) {
+			socket.emit("search", parseData(data));
+		} else {
+			socket.emit("no logs");
+		}
+	});
+}
+
+function emitSearchNickData(socket, search) {
+
+	var searchCriteria = {
+		nick: { $regex: search, $options: 'i' },
 		channel: Config.filter
 	};
 
@@ -128,10 +144,29 @@ io.sockets.on('connection', function(socket) {
 		}
 	});
 
-	socket.on('search', function(search, date) {
+	socket.on('search log', function(search, date) {
 		if(search != "") {
 			socket.isToday = false;
-			emitSearchData(socket, search);
+			emitSearchLogData(socket, search);
+		} else {
+			date = moment(date);
+			if(date.isValid()) {
+
+				if(moment().diff(date, 'days') == 0) {
+					socket.isToday = true;
+				} else {
+					socket.isToday = false;
+				}
+
+				emitLogDataOnDate(socket, date);
+			}
+		}
+	});
+
+	socket.on('search nick', function(search, date) {
+		if(search != "") {
+			socket.isToday = false;
+			emitSearchNickData(socket, search);
 		} else {
 			date = moment(date);
 			if(date.isValid()) {
