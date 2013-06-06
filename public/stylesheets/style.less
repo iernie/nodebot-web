@@ -20,17 +20,36 @@ body {
     #menu {
         padding: 0 0 5px 0;
 
+        #datepicker {
+            &:disabled {
+                background: #eee;
+            }
+        }
+
         input {
             margin: 0 0 0 5px;
             border: 1px solid #ccc;
-            border-radius: 3px;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
             padding: 5px;
             width: 70px;
             background: #fff;
         }
 
+        select {
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 0px;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+
         #search {
             width: 120px;
+            margin-left: -7px;
         }
 
         #scroll {
@@ -41,8 +60,9 @@ body {
     }
 
     ul#logs {
+        box-sizing: border-box;
         list-style-type: none;
-        width: 958px;
+        width: 960px;
         padding: 0;
         margin: 0;
         overflow: scroll;
@@ -54,7 +74,8 @@ body {
         .clearfix;
 
         li {
-            width: 868px;
+            box-sizing: border-box;
+            width: 958px;
             padding: 10px 10px 10px 80px;
             font-weight: 300;
             font-size: 0.9em;
@@ -131,6 +152,7 @@ html[xmlns] .clearfix {
         width: 100% !important;
 
         ul#logs {
+            width: 100% !important;
 
             li {
                 width: 100% !important;
@@ -145,6 +167,14 @@ html[xmlns] .clearfix {
         .float-right {
             clear: right !important;
             width: 100% !important;
+        }
+
+        #scroll {
+            display: none;
+        }
+
+        #search {
+            width: 60px !important;
         }
     }
 }

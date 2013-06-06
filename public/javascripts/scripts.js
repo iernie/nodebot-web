@@ -64,6 +64,11 @@ $(document).ready(function() {
     });
 
     $("#search, #search-type").on('change', function() {
+        if($("#search").val() != "") {
+            $("#datepicker").prop('disabled', true);
+        } else {
+            $("#datepicker").prop('disabled', false);
+        }
         socket.emit("search", $("#search-type").find(":selected").val(), $("#search").val());
     });
 
