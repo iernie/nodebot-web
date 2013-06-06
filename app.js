@@ -38,13 +38,10 @@ function emitLogData(socket, limit) {
 	});
 }
 
-function emitLogDataOnDate(socket, search, date) {
+function emitLogDataOnDate(socket, date) {
 
 	var endDate = date.clone().add('days', 1);
 	var searchCriteria = {channel: Config.filter, date: {$gte: date.format("YYYY/MM/DD HH:mm:ss"), $lt: endDate.format("YYYY/MM/DD HH:mm:ss")}};
-	if(search != "") {
-		searchCriteria.message = { $regex: search, $options: 'i' };
-	}
 
 	dbCollection.find(searchCriteria, function(err, data) {
 		if(data.length > 0) {
@@ -52,6 +49,22 @@ function emitLogDataOnDate(socket, search, date) {
 				socket.lastId = data[data.length-1]._id;
 			}
 			socket.emit("date logs", parseData(data));
+		} else {
+			socket.emit("no logs");
+		}
+	});
+}
+
+function emitSearchData(socket, search) {
+
+	var searchCriteria = {
+		$or: [{message: { $regex: search, $options: 'i' }}, {nick: { $regex: search, $options: 'i' }}],
+		channel: Config.filter
+	};
+
+	dbCollection.find(searchCriteria, function(err, data) {
+		if(data.length > 0) {
+			socket.emit("search", parseData(data));
 		} else {
 			socket.emit("no logs");
 		}
@@ -101,17 +114,35 @@ io.sockets.on('connection', function(socket) {
 	emitLogData(socket, 500);
 	emitChattyData(socket);
 
-	socket.on('date change', function(search, date) {
+	socket.on('date change', function(date) {
 		date = moment(date);
 		if(date.isValid()) {
 
-			if(moment().diff(date, 'days') == 0 && search == "") {
+			if(moment().diff(date, 'days') == 0) {
 				socket.isToday = true;
 			} else {
 				socket.isToday = false;
 			}
 
-			emitLogDataOnDate(socket, search, date);
+			emitLogDataOnDate(socket, date);
+		}
+	});
+
+	socket.on('search', function(search, date) {
+		if(search != "") {
+			emitSearchData(socket, search);
+		} else {
+			date = moment(date);
+			if(date.isValid()) {
+
+				if(moment().diff(date, 'days') == 0) {
+					socket.isToday = true;
+				} else {
+					socket.isToday = false;
+				}
+
+				emitLogDataOnDate(socket, date);
+			}
 		}
 	});
 

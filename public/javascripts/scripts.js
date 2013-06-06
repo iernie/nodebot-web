@@ -21,6 +21,10 @@ function makeLogLine(data) {
     return '<li><span class="date">&#91;' + data.date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data.color + '">&lt;' + data.nick + "&gt;</span> " + data.message + '</li>';
 }
 
+function makeLogSearchLine(data) {
+    return '<li><span class="date">&#91;' + data.date + '&#93;</span> <span class="color" style="color: #' + data.color + '">&lt;' + data.nick + "&gt;</span> " + data.message + '</li>';
+}
+
 function makeChattyLine(data) {
     return '<li>' + data.nick + " with a total of " + data.count + ' lines.</li>';
 }
@@ -55,18 +59,26 @@ $(document).ready(function() {
         changeMonth: true,
         changeYear: true,
         onSelect: function(dateText, inst) {
-            socket.emit("date change", $("#search").val(), $('#datepicker').datepicker('getDate'));
+            socket.emit("date change", $('#datepicker').datepicker('getDate'));
         }
     });
 
     $("#search").on('change', function() {
-        socket.emit("date change", $(this).val(), $('#datepicker').datepicker('getDate'));
+        socket.emit("search", $(this).val(), $('#datepicker').datepicker('getDate'));
     });
 
     socket.on('date logs', function(data) {
         $("#logs").html('');
         for (var i = 0; i < data.length; i++) {
             $("#logs").append(makeLogLine(data[i]));
+        }
+        scrollToTop();
+    });
+
+    socket.on('search', function(data) {
+        $("#logs").html('');
+        for (var i = 0; i < data.length; i++) {
+            $("#logs").append(makeLogSearchLine(data[i]));
         }
         scrollToTop();
     });
