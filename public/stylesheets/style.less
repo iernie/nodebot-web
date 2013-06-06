@@ -29,27 +29,27 @@ body {
         input {
             margin: 0 0 0 5px;
             border: 1px solid #ccc;
-            border-top-right-radius: 3px;
-            border-bottom-right-radius: 3px;
             padding: 5px;
             width: 70px;
+            border-radius: 3px;
             background: #fff;
         }
 
         select {
-            appearance: none;
-            -moz-appearance: none;
-            -webkit-appearance: none;
-            padding: 5px;
             border: 1px solid #ccc;
-            border-radius: 0px;
-            border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;
+            background: #fff;
+            display: inline-block;
+            height: 26px;
+            padding: 4px 6px;
+            font-size: 10px;
+            line-height: 20px;
+            vertical-align: middle;
+            border-radius: 3px;
         }
 
         #search {
-            width: 120px;
-            margin-left: -7px;
+            width: 100px;
+            margin-left: -2px;
         }
 
         #scroll {
@@ -68,7 +68,9 @@ body {
         width: 960px;
         padding: 0;
         margin: 0;
-        overflow: scroll;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        word-wrap: break-word;
         -webkit-overflow-scrolling: touch;
         height: 398px;
         border: 1px solid #111;
@@ -80,7 +82,7 @@ body {
             box-sizing: border-box;
             -moz-box-sizing: border-box;
             -webkit-box-sizing: border-box;
-            width: 958px;
+            width: 100%;
             padding: 10px 10px 10px 80px;
             font-weight: 300;
             font-size: 0.9em;
