@@ -78,12 +78,12 @@ $(document).ready(function() {
             } else {
                 $("#datepicker").prop('disabled', false);
             }
-            socket.emit("search", $("#search-type").find(":selected").val(), $("#search").val());
+            socket.emit("search", $("input[name='select-type']:checked").val(), $("#search").val());
         }, 1000 ); 
     });
 
-    $("#search-type").on('change', function() {
-        socket.emit("search", $("#search-type").find(":selected").val(), $("#search").val());
+    $("input[name='select-type']").on('change', function() {
+        socket.emit("search", $("input[name='select-type']:checked").val(), $("#search").val());
     });
 
     socket.on('date logs', function(data) {

@@ -19,11 +19,9 @@
             <h1><%= title %></h1>
             <div id="menu">
                 Showing logs for: <input id="datepicker" type="text"> |
-                <select id="search-type">
-                    <option value="nick">Search nick</option>
-                    <option value="log" selected>Search Log</option>
-                </select>
-                <input id="search" type="text" placeholder="query...">
+                <input id="search" type="text" placeholder="Search...">
+                <input type="radio" name="select-type" value="log" checked>Logs
+                <input type="radio" name="select-type" value="nick">Nick
                 <div id="scroll"><a id="scroll-to-bottom" href="#">Scroll to bottom</a></div>
             </div>
             <ul id="logs"></ul>
