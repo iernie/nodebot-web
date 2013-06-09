@@ -35,18 +35,6 @@ body {
             background: #fff;
         }
 
-        select {
-            border: 1px solid #ccc;
-            background: #fff;
-            display: inline-block;
-            height: 26px;
-            padding: 4px 6px;
-            font-size: 10px;
-            line-height: 20px;
-            vertical-align: middle;
-            border-radius: 3px;
-        }
-
         #search {
             width: 100px;
             margin-left: -2px;
@@ -60,7 +48,7 @@ body {
         }
     }
 
-    ul#logs {
+    #logs {
         box-sizing: border-box;
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
@@ -108,35 +96,23 @@ body {
         text-align: center;
     }
 
-    ol.chatty {
-        margin: 0 0 20px 0;
+    #chatty {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
         padding-left: 25px;
 
         li {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
             padding: 5px;
-            margin: 0 10px;
             font-weight: 400;
 
             &:nth-child(even) {
                 background: #ddd;
             }
         }
-    }
-
-    .float-left {
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        float: left;
-        width: 470px;
-    }
-
-    .float-right {
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        float: right;
-        width: 470px;
     }
 }
 
@@ -165,7 +141,7 @@ html[xmlns] .clearfix {
     #content {
         width: 100% !important;
 
-        ul#logs {
+        #logs {
             width: 100% !important;
 
             li {
@@ -173,17 +149,7 @@ html[xmlns] .clearfix {
             }
         }
 
-        .float-left {
-            clear: left !important;
-            width: 100% !important;
-        }
-
-        .float-right {
-            clear: right !important;
-            width: 100% !important;
-        }
-
-        #scroll {
+        #menu {
             display: none;
         }
 

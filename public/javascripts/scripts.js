@@ -26,7 +26,7 @@ function makeLogSearchLine(data) {
 }
 
 function makeChattyLine(data) {
-    return '<li>' + data.nick + " with a total of " + data.count + ' lines.</li>';
+    return '<li><strong>' + data.nick + "</strong> with a total of " + data.count + ' lines.</li>';
 }
 
 $(document).ready(function() {
@@ -124,14 +124,11 @@ $(document).ready(function() {
     });
 
     socket.on('chatty', function(data) {
-        var numberOfUsers = data.length >= 5 ? 5 : data.length;
-        $("#mostChatty").html('');
+        var numberOfUsers = data.length >= 10 ? 10 : data.length;
+        $("#chatty-users").html(numberOfUsers);
+        $("#chatty").html('');
         for (var i = 0; i < numberOfUsers; i++) {
-            $("#mostChatty").append(makeChattyLine(data[i]));
-        }
-        $("#leastChatty").html('')
-        for (var i = data.length-1; i >= data.length-numberOfUsers; i--) {
-            $("#leastChatty").append(makeChattyLine(data[i]));
+            $("#chatty").append(makeChattyLine(data[i]));
         }
     });
 

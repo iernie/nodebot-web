@@ -12,7 +12,7 @@ var express = require('express')
 
 function parseData(data) {
 	for (var i = 0; i < data.length; i++) {
-		data[i].color = md5(data[i].nick).substring(1,7);
+		data[i].color = md5(data[i].nick).substring(6,10);
 	}
 	return data;
 }
