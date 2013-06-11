@@ -116,10 +116,10 @@ $(document).ready(function() {
     socket.on('logs', function(data) {
         $("#datepicker").datepicker('setDate', new Date(data[0].date));
         $("#logs").html('');
-        var i = 0, fragment = document.createDocumentFragment();
-        while(i < data.length) {
+        var i = data.length-1, fragment = document.createDocumentFragment();
+        while(i >= 0) {
             fragment.appendChild(makeLogLine(data[i]));
-            i++;
+            i--;
         }
         $("#logs").append(fragment);
         scrollToBottom();
