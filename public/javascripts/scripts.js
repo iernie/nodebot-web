@@ -18,15 +18,21 @@ function showNewLogsMessage(logs) {
 }
 
 function makeLogLine(data) {
-    return '<li><span class="date">&#91;' + data.date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data.color + '">&lt;' + data.nick + "&gt;</span> " + data.message + '</li>';
+    var el = document.createElement('li');
+    el.innerHTML = '<span class="date">&#91;' + data.date.substr(11) + '&#93;</span> <span class="color" style="color: #' + data.color + '">&lt;' + data.nick + "&gt;</span> " + data.message;
+    return el;
 }
 
 function makeLogSearchLine(data) {
-    return '<li><span class="date">&#91;' + data.date + '&#93;</span> <span class="color" style="color: #' + data.color + '">&lt;' + data.nick + "&gt;</span> " + data.message + '</li>';
+    var el = document.createElement('li');
+    el.innerHTML = '<span class="date">&#91;' + data.date + '&#93;</span> <span class="color" style="color: #' + data.color + '">&lt;' + data.nick + "&gt;</span> " + data.message;
+    return el;
 }
 
 function makeChattyLine(data) {
-    return '<li><strong>' + data.nick + "</strong> with a total of " + data.count + ' lines.</li>';
+    var el = document.createElement('li');
+    el.innerHTML = '<strong>' + data.nick + "</strong> with a total of " + data.count + ' lines.';
+    return el;
 }
 
 $(document).ready(function() {
@@ -88,34 +94,45 @@ $(document).ready(function() {
 
     socket.on('date logs', function(data) {
         $("#logs").html('');
-        for (var i = 0; i < data.length; i++) {
-            $("#logs").append(makeLogLine(data[i]));
+        var i = 0, fragment = document.createDocumentFragment();
+        while(i < data.length) {
+            fragment.appendChild(makeLogLine(data[i]));
+            i++;
         }
+        $("#logs").append(fragment);
         scrollToTop();
     });
 
     socket.on('search', function(data) {
         $("#logs").html('');
-        for (var i = 0; i < data.length; i++) {
-            $("#logs").append(makeLogSearchLine(data[i]));
+        var i = 0, fragment = document.createDocumentFragment();
+        while(i < data.length) {
+            fragment.appendChild(makeLogSearchLine(data[i]));
         }
+        $("#logs").append(fragment);
         scrollToBottom();
     });
 
     socket.on('logs', function(data) {
         $("#datepicker").datepicker('setDate', new Date(data[0].date));
         $("#logs").html('');
-        for (var i = data.length-1; i >= 0; i--) {
-            $("#logs").append(makeLogLine(data[i]));
+        var i = 0, fragment = document.createDocumentFragment();
+        while(i < data.length) {
+            fragment.appendChild(makeLogLine(data[i]));
+            i++;
         }
+        $("#logs").append(fragment);
         scrollToBottom();
     });
 
     socket.on('new logs', function(data) {
         var shouldScrollToBottom = isScrolledToBottom();
-        for (var i = 0; i < data.length; i++) {
-            $("#logs").append(makeLogLine(data[i]));
+        var i = 0, fragment = document.createDocumentFragment();
+        while(i < data.length) {
+            fragment.appendChild(makeLogLine(data[i]));
+            i++;
         }
+        $("#logs").append(fragment);
         if(shouldScrollToBottom) {
             scrollToBottom();
         } else {
@@ -127,9 +144,12 @@ $(document).ready(function() {
         var numberOfUsers = data.length >= 10 ? 10 : data.length;
         $("#chatty-users").html(numberOfUsers);
         $("#chatty").html('');
-        for (var i = 0; i < numberOfUsers; i++) {
-            $("#chatty").append(makeChattyLine(data[i]));
+        var i = 0, fragment = document.createDocumentFragment();
+        while(i < numberOfUsers) {
+            fragment.appendChild(makeChattyLine(data[i]));
+            i++;
         }
+        $("#chatty").append(fragment);
     });
 
     socket.on('no logs', function() {
